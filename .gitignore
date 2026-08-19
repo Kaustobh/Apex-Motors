@@ -1,0 +1,22 @@
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# System & Environment
+.env
+.env.local
+*.log
+.system_generated/
+
+# Draft / Unused Raw Assets
+index.html_restored
+navy_sedan.png
+rhetorician.glb
+showroom_bg.png
+
+# IDE / Editors
+.idea/
+.vscode/
+*.swp
+*.swo

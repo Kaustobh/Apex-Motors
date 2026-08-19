@@ -1,0 +1,117 @@
+================================================================================
+                     APEX MOTORS // RACING COGNITIVE AUDIT
+                           COMPLETE PROJECT REPORT
+================================================================================
+
+1. EXECUTIVE SUMMARY & PURPOSE
+--------------------------------------------------------------------------------
+The APEX MOTORS interactive 3D exhibit is a museum-grade, single-page digital 
+showroom designed to showcase two legendary racing machines:
+- The Mercedes-AMG GT4 (M178 V8 Twin-Turbocharged)
+- The Mercedes-AMG GT3 EVO (M159 V8 Naturally Aspirated)
+
+The purpose of this application is to transcend standard web galleries by 
+delivering a highly persuasive, scroll-linked cinematic journey. Every viewport 
+increment dynamically orchestrates 3D camera matrices, procedural shader 
+uniforms, spatial audio synthesis thresholds, and chiseled typographic layouts 
+to tell a cohesive narrative of luxury, engineering precision, and raw performance.
+
+The project is built entirely on modern, vanilla web standards, achieving 
+extreme performance (60+ FPS) and zero external build tool dependencies.
+
+
+2. TECHNICAL STACK ARCHITECTURE
+--------------------------------------------------------------------------------
+- Core Modules: Modern ES Modules (ESM) isolating application concerns into:
+  - `app.js` (Main orchestrator and render loop)
+  - `scene.js` (Three.js pipeline, models, lighting, and camera keyframes)
+  - `audioEngine.js` (Native Web Audio API V8 synthesizer and oscillators)
+  - `uiController.js` (Damped virtual scroll, HUD, and narrative logic)
+  - `shaders.js` (GLSL volumetric exhaust combustion flame shaders)
+- 3D Render Pipeline: Three.js (v0.165.0) utilizing:
+  - Transparent WebGLRenderer (alpha: true) to lay 3D assets over CSS backdrops.
+  - ACESFilmicToneMapping with custom exposure for high-end color grading.
+  - GLTFLoader for loading and disposing of complex vehicle assets.
+  - OrbitControls for manual, interactive showroom inspection.
+- Animation Engine: GSAP (v3.12.5) managing:
+  - Multi-tiered camera scroll timeline interpolation.
+  - Cinematic camera fly-back/intro Tweens (1.4s power2.inOut).
+  - Showroom zoom-out overview transitions (1.5s power2.out).
+  - Holographic model materialize/de-materialize scales and scanner sweeps.
+- Synthetic Audio: Web Audio API utilizing:
+  - Custom oscillator arrays (sawtooth/triangle) for V8 combustion harmonics.
+  - Waveshaper Nodes simulating cylinder compression and exhaust distortion.
+  - BiquadFilterNodes modeling exhaust muffling and air intake whines.
+  - GainNodes mapping real-time throttle capacitance and RPM curves.
+- Design System: Vanilla CSS utilizing strict CSS Design Tokens, glassmorphism, 
+  and fixed backgrounds (bg_gold.jpg and bg_red.jpg).
+
+
+3. CORE SUBSYSTEMS & IMPLEMENTATION
+--------------------------------------------------------------------------------
+A. 3D Scene Manager (`js/scene.js`)
+   - Manages a transparent WebGL canvas overlaid on top of fixed wavy silk CSS 
+     backgrounds (golden for GT4, red for GT3 EVO).
+   - Dynamic lighting rig featuring a directional sun, ambient fills, and a 
+     moving colored underglow PointLight that updates color based on the active 
+     vehicle theme.
+   - Separate 7-keyframe camera paths for both models, focusing on vehicle-specific 
+     components (e.g., center-lock wheels and swan-neck wings on the GT3 EVO, 
+     Biturbo turbochargers and ABS modules on the GT4).
+   - Full 5-hotspot matrix per vehicle. Clicking a hotspot triggers a 1.6s 
+     fly-to camera tween directly focusing on the annotated component.
+
+B. Synthesized V8 Audio Engine (`js/audioEngine.js`)
+   - Replaces static audio loops with a real-time synthesized V8 audio graph.
+   - Mapped to two distinct acoustics profiles:
+     - AMG GT4: Low-frequency twin-turbo rumble (33 Hz idle) with a pneumatic 
+       starter sequence and muffled exhaust notes.
+     - AMG GT3 EVO: High-revving, aggressive naturally aspirated roar (42 Hz idle) 
+       screaming to a 9,000 RPM redline with instant throttle response.
+   - Includes a straight-cut sequential gearbox clank and gear whine pitch shifter.
+   - Low-frequency Pilot Cocoon Mode engages during Phase 4, dimming secondary 
+     harmonics to low sub-bass rumbles.
+
+C. Volumetric Exhaust Flame Shaders (`js/shaders.js`)
+   - Procedural WebGL vertex and fragment shaders generating volumetric exhaust 
+     flames behind the tailpipes.
+   - Operates on a 3D Simplex noise algorithm warped by time and throttle value 
+     uniforms.
+   - Features dynamic backfire ignition cuts, generating intense, high-scale 
+     flame bursts and camera shakes when shifting gears at high RPMs.
+
+D. UI & Scroll Controller (`js/uiController.js`)
+   - Captures wheel and touch events, translating them into a damped virtual 
+     scroll progress variable (0.0 to 1.0).
+   - Swaps narrative text storyboards and CSS classes (`.theme-evo`) dynamically.
+   - Reorganizes HUD layouts:
+     - Left Sidebar: Houses Vehicle System details (Active model, Gearbox HUD) 
+       and the Design Ethos block.
+     - Right Sidebar: Houses the Performance Profile (themed monospace telemetry), 
+       Vehicle Gallery (switcher), Thrust Interactive (ignition/throttle), and 
+       Track Experience block.
+     - Empty bottom footer overlays and hotkeys legends have been removed to 
+       deliver an unobstructed, cinematic viewing deck.
+
+
+4. SKILLS & ENGINEERING TECHNIQUES USED
+--------------------------------------------------------------------------------
+- WebGL & Mathematical Optimization: Camera matrix interpolation, vector 
+  projection (Vector3.project) to position HTML hotspot tags dynamically over 3D 
+  coordinates, and WebGL memory cleanup (disposing geometries and materials).
+- Digital Signal Processing (DSP): Constructing complex Web Audio graphs, 
+  calculating waveshaping curves, and configuring real-time frequency analysis.
+- Premium UI/UX Design: Implementation of glassmorphism (backdrop-filter), 
+  curated color palettes, responsive sidebars, and glowing text-shadows.
+- Test-Driven Quality Control: Automated pre-deployment syntax checkers, DOM 
+  structural validators, and headless Chrome diagnostic captures.
+
+
+5. CONCLUSION
+--------------------------------------------------------------------------------
+By merging WebGL graphics, procedural GLSL shaders, and real-time Web Audio 
+synthesis into a cohesive scroll-linked timeline, the APEX MOTORS exhibit 
+delivers a luxury digital experience. The interface responds to scroll, touch, 
+and click inputs with fluid, organic animations, celebrating the engineering 
+milestones of Mercedes-AMG.
+================================================================================

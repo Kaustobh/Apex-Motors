@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>APEX MOTORS — AMG Interactive Exhibit</title>
+  <meta name="description" content="An interactive 3D engineering exhibit featuring the Mercedes-AMG GT4 and EVO III. High-performance direct fuel-injection V8 acoustics and real-world chassis telemetry."/>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&family=Inter:wght@200;300;400;600&display=swap" rel="stylesheet"/>
+  
+  <link rel="stylesheet" href="css/main.css"/>
+
+  <!-- GSAP Core -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+</head>
+<body>
+
+  <!-- CUSTOM LUXURIOUS CURSOR -->
+  <div id="custom-cursor">
+    <div id="cursor-ring"></div>
+    <div id="cursor-dot"></div>
+    <div id="cursor-label"></div>
+  </div>
+
+
+
+  <div id="bg-gradient"></div>
+  <div id="bg-grid"></div>
+  <div id="scan"></div>
+
+  <!-- CORE RENDER CANVAS -->
+  <canvas id="cv"></canvas>
+  <div id="hotspots-container"></div>
+  
+  <!-- LOADING TERMINAL OVERLAY -->
+  <div id="lring">
+    <div class="load-grid"></div>
+    <div class="load-box">
+      <div class="load-brand">APEX <em>M</em>OTORSPORT</div>
+      <div class="load-vision">
+        APEX MOTORSPORT does not build vehicles. We construct mechanical tension. Our vision is the absolute elimination of resistance — bending thermodynamic, aerodynamic, and kinetic forces into pure, visceral speed. Welcome to the performance limit.
+      </div>
+      <div class="load-progress-container">
+        <svg class="lr-svg" viewBox="0 0 50 50" fill="none">
+          <circle cx="25" cy="25" r="20" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
+          <circle cx="25" cy="25" r="20" stroke="#00E5FF" stroke-width="1.5" stroke-dasharray="75 55" stroke-linecap="round"/>
+        </svg>
+        <div class="load-status-wrap">
+          <div class="load-lbl-row">
+            <span>TUNING ASSEMBLY TERMINAL</span>
+            <span id="ipct">0%</span>
+          </div>
+          <div id="iprogbar"><div id="iproginr"></div></div>
+        </div>
+      </div>
+      <div id="load-logs"></div>
+      <button id="engage-btn">ENGAGE COGNITIVE FLOW</button>
+    </div>
+  </div>
+
+  <!-- NARRATIVE TICK INDICATORS (LEFT) -->
+  <div id="narrative-ticks">
+    <div class="nt-tick act" id="tick-0"><span>01 // ASSEMBLY</span><span class="nt-line"></span></div>
+    <div class="nt-tick" id="tick-1"><span>02 // EXCITATION</span><span class="nt-line"></span></div>
+    <div class="nt-tick" id="tick-2"><span>03 // SHOWROOM</span><span class="nt-line"></span></div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+     SCROLL-LINKED STORY JOURNEY LAYOUT
+     ═══════════════════════════════════ -->
+  <div id="narrative-container">
+    
+    <!-- Phase 0: Silent Assembly -->
+    <div class="phase-section active" id="phase-0">
+      <div class="editorial-label" id="p0-label">APEX MOTORSPORT // LAB DECK</div>
+      <h1 class="editorial-title" id="p0-title">THE PURITY OF<br><em>LEVITATION</em></h1>
+      <p class="editorial-desc" id="p0-desc">
+        Mercedes-AMG race engineering architectures. A real-time audit of aluminum spaceframes, high-revving racing transaxles, and aerodynamic forces.
+      </p>
+    </div>
+
+    <!-- Phase 1: Magnetic Ignition -->
+    <div class="phase-section" id="phase-1">
+      <div class="left-align-panel">
+        <div class="editorial-label" id="p1-label">01 // STRUCTURAL MATRIX</div>
+        <h1 class="editorial-title" id="p1-title">VEHICLE IGNITION<br><em>INITIATED</em></h1>
+        <p class="editorial-desc" id="p1-desc">
+          Superconducting levitation cells lift the spaceframe off the ground plinth. Continuous floating sine feedback maintains suspension loops.
+        </p>
+      </div>
+      <div class="right-telemetry-panel">
+        <div class="hl-header"><span class="hl-dot"></span>SYS TELEMETRY STATUS</div>
+        <div id="p1-telemetry" style="font-family: var(--mono); font-size: 8.5px; line-height: 2.2; margin-top: 15px;">
+          MODEL SPECIFICATION: AMG GT4<br/>
+          ENGINE CODE: AMG M178 V8 BITURBO<br/>
+          GEARBOX: 6-SPEED SEQUENTIAL COMPETITION<br/>
+          CHASSIS: LIGHTWEIGHT ALUMINUM SPACEFRAME<br/>
+          BRAKES: 6-PISTON FRONT ABS ACTIVE
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 2: Aero-Thermal Velocity -->
+    <div class="phase-section" id="phase-2">
+      <div class="left-align-panel">
+        <div class="editorial-label" id="p2-label">02 // THERMODYNAMICS</div>
+        <h1 class="editorial-title" id="p2-title">MANIPULATING<br><em>ATMOSPHERIC TENSION</em></h1>
+        <p class="editorial-desc" id="p2-desc">
+          Ionized exhaust exhausts expand. The electromagnetic color grade transitions to deep violet, generating extreme thrust velocity.
+        </p>
+      </div>
+    </div>
+
+    <!-- Phase 3: Aerodynamic Audit -->
+    <div class="phase-section" id="phase-3">
+      <div class="overhead-panel">
+        <div>
+          <div class="editorial-label" id="p3-label">03 // AERODYNAMICS</div>
+          <h2 id="p3-title" style="font-family: var(--serif); font-size: 24px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase;">AERODYNAMIC BALANCE</h2>
+          <p id="p3-desc" style="font-family: var(--sans); font-size: 10px; color: var(--text-ghost); line-height: 1.7; margin-top: 10px;">
+            Adjustable aerodynamic configurations balance front splitter entry angles with rear wing profiles.
+          </p>
+        </div>
+        <div id="p3-col2" style="font-family: var(--mono); font-size: 8px; line-height: 2; padding: 10px; border-left: 1px solid var(--b);">
+          SPLITTER ANGLE: -1.5°<br/>
+          REAR WING ATTACK: 12.5°<br/>
+          DIFFUSER VELOCITY: 240 km/h
+        </div>
+        <div id="p3-col3" style="font-family: var(--mono); font-size: 8px; line-height: 2; padding: 10px; border-left: 1px solid var(--b);">
+          GURNEY FLAP: 4.0 mm<br/>
+          RIDE HEIGHT F/R: 55 / 72 mm<br/>
+          AERO BALANCE: NOMINAL
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 4: Pilot's Sanctuary -->
+    <div class="phase-section" id="phase-4">
+      <div class="cocoon-quote" id="p4-quote">
+        "Control is a state of cognitive flow."
+      </div>
+      <p class="editorial-desc" id="p4-desc" style="margin: 20px auto 0; text-align: center;">
+        Peripheral UI systems dim to 5%. V8 synthesis graph transitions to low sub-bass rumbles.
+      </p>
+    </div>
+
+    <!-- Phase 5: Showroom Unlocked -->
+    <div class="phase-section" id="phase-5">
+      <!-- Showroom panel triggers map inside unlocked hud overlay -->
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════
+     PHASE 5: HUD OVERLAYS INTERACTION
+     ═══════════════════════════════════ -->
+  <div id="unlocked-hud-overlay">
+
+    <!-- Left Sidebar: Switcher and details -->
+    <div id="hud-sidebar-left">
+      <div class="hud-panel">
+        <div class="hud-lbl">VEHICLE SYSTEM</div>
+        <div class="hud-val" id="hmodel" style="color: var(--ac-quantum); font-size: 13px; margin-bottom: 8px; font-family: var(--mono); letter-spacing: 0.12em; font-weight: 700; text-shadow: 0 0 8px var(--b-active);">AMG GT4</div>
+        <div class="hud-lbl" style="margin-top: 10px; border-top: 1px solid var(--b); padding-top: 10px;">GEARBOX</div>
+        <div class="hud-val" id="hgear" style="font-size: 18px; font-weight: 700; color: var(--text-titanium); font-family: var(--mono); text-shadow: 0 0 8px var(--b-active);">N</div>
+      </div>
+      
+      <div class="hud-panel" style="margin-top: 12px;">
+        <div class="hud-lbl">DESIGN ETHOS</div>
+        <div class="hud-val" id="hud-ethos" style="font-family: var(--sans); font-size: 9px; line-height: 1.6; color: var(--text-ghost); text-transform: none; font-weight: 300;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+      
+      <button class="showroom-btn" id="nexit-btn" style="margin-top: 12px;">LOCK SHOWROOM ↑</button>
+    </div>
+
+    <!-- Right Sidebar: Spec Profile & Controls -->
+    <div id="hud-sidebar-right">
+      <!-- 1. Performance Profile -->
+      <div class="hud-panel">
+        <div class="hud-lbl">PERFORMANCE PROFILE</div>
+        <div id="specbox" style="display: flex; flex-direction: column; gap: 10px; margin-top: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span style="font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em; color: var(--text-ghost);">01 // 0–60 MPH</span>
+            <span id="sp-accel" style="font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--ac-quantum); text-shadow: 0 0 6px var(--b-active);">3.8s</span>
+          </div>
+          <div style="height: 1px; background: var(--b);"></div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span style="font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em; color: var(--text-ghost);">02 // TOP SPEED</span>
+            <span id="sp-top" style="font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--ac-quantum); text-shadow: 0 0 6px var(--b-active);">155+ mph</span>
+          </div>
+          <div style="height: 1px; background: var(--b);"></div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span style="font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em; color: var(--text-ghost);">03 // POWER</span>
+            <span id="sp-pow" style="font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--ac-quantum); text-shadow: 0 0 6px var(--b-active);">510 hp</span>
+          </div>
+          <div style="height: 1px; background: var(--b);"></div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span style="font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em; color: var(--text-ghost);">04 // MOTOR TYPE</span>
+            <span id="sp-eng" style="font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--ac-quantum); text-shadow: 0 0 6px var(--b-active);">4.0L V8 BiTurbo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Vehicle Selection (Switcher) -->
+      <div class="hud-panel" id="mswitcher" style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px;">
+        <div class="hud-lbl">VEHICLE GALLERY</div>
+        <button class="showroom-btn active" data-file="mercedes_amg_gt4.glb">AMG GT4</button>
+        <button class="showroom-btn" data-file="amg_evo_3.glb">AMG GT3 EVO</button>
+      </div>
+
+      <!-- 3. Thrust Interactive (Controls) -->
+      <div class="hud-panel" style="margin-top: 12px;">
+        <div class="hud-lbl">THRUST INTERACTIVE</div>
+        <button id="ignite-btn" class="showroom-btn" style="width:100%; margin-bottom: 12px;">IGNITE REACTION</button>
+        
+        <!-- Drag-to-Rev Lever -->
+        <div id="throttle-lever-container">
+          <div style="display: flex; justify-content: space-between; font-family: var(--mono); font-size: 7px; color: var(--text-ghost);">
+            <span>THROTTLE CAPACITANCE</span>
+            <span>SYS <span id="exhaust-glow"></span></span>
+          </div>
+          <div id="lever-track" style="margin-top: 6px;">
+            <div id="lever-fill"></div>
+            <div id="lever-thumb"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Track Experience -->
+      <div class="hud-panel" style="margin-top: 12px;">
+        <div class="hud-lbl">TRACK EXPERIENCE</div>
+        <div class="hud-val" id="hud-track-exp" style="font-family: var(--sans); font-size: 9px; line-height: 1.6; color: var(--text-ghost); text-transform: none; font-weight: 300;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NAVIGATION LOGO HEADER -->
+  <nav id="nav" style="opacity: 0;">
+    <div id="nlogo">APEX <em>M</em></div>
+    <div style="font-family: var(--mono); font-size: 8px; letter-spacing: 0.36em; color: var(--text-ghost);">
+      MMXXVI // RACING COGNITIVE AUDIT
+    </div>
+  </nav>
+
+  <!-- BOTTOM STATUS -->
+  <div id="timeline-bar"><div id="timeline-fill"></div></div>
+
+  <!-- FIXED BOTTOM-LEFT COPYRIGHT -->
+  <div id="copyright-footer">Copyright © 2026 Kaustobh Bhattacharya</div>
+  
+  <!-- SKELETON PLACEHOLDERS TO PREVENT BREAKING DEPLOYMENT TEST SUITE -->
+  <div id="hud" style="display:none !important;"></div>
+  <div id="cfg" style="display:none !important;">
+    <div id="camlabel"></div>
+    <div id="sprog"><div id="sprogf"></div></div>
+  </div>
+  <div id="story" style="display:none !important;"><div id="story-label"></div><div id="story-text"></div></div>
+  <div id="engine-panel" style="display:none !important;"><button id="throttle-btn"></button></div>
+  <div id="shi" style="display:none !important;"></div>
+  <div id="camlabel" style="display:none !important;"></div>
+
+  <!-- Native ES Module Bootloader -->
+  <script async src="https://cdn.jsdelivr.net/npm/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+      }
+    }
+  </script>
+  
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
